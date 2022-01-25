@@ -1,0 +1,31 @@
+import { NodebootOauth2StarterService } from './../nodeboot-oauth2-starter.service';
+import { AfterViewInit, OnDestroy, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { Part } from '../nodeboot-oauth2-starter.service';
+import * as i0 from "@angular/core";
+export declare class OauthStarterApplicationPartComponent implements OnInit, OnDestroy, AfterViewInit {
+    private nbService;
+    dialog: MatDialog;
+    parts: Part[];
+    errorMessage: string | undefined;
+    displayedColumns: string[];
+    masterParts: string[];
+    resultsLength: number;
+    isLoadingResults: boolean;
+    reload: BehaviorSubject<number>;
+    userDataSubscription: Subscription;
+    paginator: MatPaginator;
+    sort: MatSort;
+    constructor(nbService: NodebootOauth2StarterService, dialog: MatDialog);
+    ngOnDestroy(): void;
+    ngAfterViewInit(): void;
+    ngOnInit(): void;
+    openCreateAppPartDialog(): void;
+    openDeletePartDialog(part: Part): void;
+    openOptionsDialog(part: Part): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<OauthStarterApplicationPartComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterApplicationPartComponent, "lib-oauth-starter-application-part", never, {}, {}, never, never>;
+}

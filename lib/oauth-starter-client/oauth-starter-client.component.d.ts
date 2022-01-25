@@ -1,0 +1,31 @@
+import { OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { Client, NodebootOauth2StarterService } from '../nodeboot-oauth2-starter.service';
+import * as i0 from "@angular/core";
+export declare class OauthStarterClientComponent implements OnInit {
+    private nbService;
+    dialog: MatDialog;
+    clients: Client[];
+    errorMessage: string | undefined;
+    displayedColumns: string[];
+    resultsLength: number;
+    isLoadingResults: boolean;
+    reload: BehaviorSubject<number>;
+    clientDataSubscription: Subscription;
+    paginator: MatPaginator;
+    sort: MatSort;
+    constructor(nbService: NodebootOauth2StarterService, dialog: MatDialog);
+    ngAfterViewInit(): void;
+    ngOnInit(): void;
+    ngOnDestroy(): void;
+    openCreateClientDialog(): void;
+    openViewRolesDialog(client: Client): void;
+    openUpdateRolesDialog(client: Client): void;
+    openUpdateClientDialog(client: Client): void;
+    openDialogDeleteClient(client: Client): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<OauthStarterClientComponent, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterClientComponent, "lib-oauth-starter-client", never, {}, {}, never, never>;
+}
