@@ -8,7 +8,7 @@ export declare class NodebootOauth2StarterService {
     };
     authUserApi: string;
     authRoleApi: string;
-    authPartApi: string;
+    authResourceApi: string;
     authClientApi: string;
     authApplicationApi: string;
     constructor(http: HttpClient, configuration: {
@@ -31,24 +31,46 @@ export declare class NodebootOauth2StarterService {
     updateRoleOptions(roleId: number, newAllowedObject: Record<string, Option[]>, originalAllowedObject: Record<string, Option[]>): Observable<Object>;
     deleteRole(roleId: number): Observable<Object>;
     getRoles(pageIndex: number, order: string): Observable<RolePaginationResult>;
-    getPartsBasic(): Observable<OptionResult>;
-    getParts(pageIndex: number, order: string): Observable<PartPaginationResult>;
-    updatePartOptions(partId: number, newPartOptions: Option[], originalPartOptions: Option[]): Observable<Object>;
-    deletePart(partId: number): Observable<Object>;
-    createPart(partIdentifier: string, applications_id: number): Observable<Object>;
+    getResourcesBasic(): Observable<OptionResult>;
+    getResources(pageIndex: number, order: string): Observable<ResourcePaginationResult>;
+    updateResourceOptions(resourceId: number, newResourceOptions: Option[], originalResourceOptions: Option[]): Observable<Object>;
+    deleteResource(resourceId: number): Observable<Object>;
+    createResource(resourceIdentifier: string, applications_id: number): Observable<Object>;
     getClients(pageIndex: number, order: string): Observable<ClientPaginationResult>;
     createClient(createClientData: {
         name: string;
         identifier: string;
         roles: BasicRole[];
-    }): Observable<ClientCreateResult>;
+    }, longLive: boolean): Observable<ClientCreateResult>;
     deleteClient(subjectId: number): Observable<Object>;
     updateClientRoles(clientId: number, roles: BasicRole[]): Observable<Object>;
     updateClient(subjectId: number, updateBody: ClientUpdateBody): Observable<Object>;
     getApplications(): Observable<ApplicationResult>;
+    getSecret(clientId: number): Observable<SecretTokenResponse>;
+    generateLongLiveToken(clientId: number, identifier: string): Observable<LongLiveTokenResponse>;
+    removeLongLiveToken(clientId: number, identifier: string): Observable<BasicResponse>;
+    modifyRevokeStatus(clientId: number, revoke: boolean): Observable<BasicResponse>;
     get apiUrl(): string;
     static ɵfac: i0.ɵɵFactoryDeclaration<NodebootOauth2StarterService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<NodebootOauth2StarterService>;
+}
+interface BasicResponse {
+    message: string;
+    code: number;
+}
+interface SecretTokenResponse {
+    message: string;
+    code: number;
+    content: {
+        clientSecret: string;
+    };
+}
+interface LongLiveTokenResponse {
+    message: string;
+    code: number;
+    content: {
+        access_token: string;
+    };
 }
 interface ApplicationResult {
     message: string;
@@ -66,7 +88,10 @@ export interface Client {
     id: number;
     subjectId: number;
     name: string;
+    description: string;
     identifier: string;
+    hasLongLiveToken?: boolean;
+    revoked?: boolean;
     roles: Role[];
 }
 interface ClientCreateResult {
@@ -75,6 +100,8 @@ interface ClientCreateResult {
     content?: ClientCreateContent;
 }
 export interface ClientCreateContent {
+    clientSecret: string;
+    clientId: string;
     access_token: string;
 }
 interface ClientPaginationResult {
@@ -92,15 +119,15 @@ interface ClientPaginationContent {
 interface OptionResult {
     message: string;
     code: number;
-    content?: Part[];
+    content?: Resource[];
 }
-interface PartPaginationResult {
+interface ResourcePaginationResult {
     message: string;
     code: number;
-    content?: PartPaginationContent;
+    content?: ResourcePaginationContent;
 }
-interface PartPaginationContent {
-    items: Part[];
+interface ResourcePaginationContent {
+    items: Resource[];
     pageIndex: number;
     itemsPerPage: number;
     totalItems: number;
@@ -129,6 +156,7 @@ interface PaginationUserContent {
 export interface User {
     id: number;
     subjectId: number;
+    description: string;
     name: string;
     username: string;
     roles: RoleUser[];
@@ -136,11 +164,11 @@ export interface User {
 export interface RoleUser {
     id: number;
     identifier: string;
-    parts: BasicPart[];
+    resources: BasicResource[];
 }
-export interface BasicPart {
+export interface BasicResource {
     id: number;
-    applicationPartName: string;
+    applicationResourceName: string;
     allowed: string[];
 }
 export interface BasicRole {
@@ -162,11 +190,11 @@ interface RolePaginationContent {
 export interface Role {
     id: number;
     identifier: string;
-    parts: Part[];
+    resources: Resource[];
 }
-export interface Part {
+export interface Resource {
     id: number;
-    applicationPartName: string;
+    applicationResourceName: string;
     allowed: Option[];
 }
 interface RoleResult {
