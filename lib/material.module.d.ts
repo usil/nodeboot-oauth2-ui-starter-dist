@@ -16,8 +16,9 @@ import * as i14 from "@angular/material/progress-spinner";
 import * as i15 from "@angular/material/dialog";
 import * as i16 from "@angular/material/expansion";
 import * as i17 from "@angular/material/tooltip";
+import * as i18 from "@angular/material/checkbox";
 export declare class LibraryMaterials {
     static ɵfac: i0.ɵɵFactoryDeclaration<LibraryMaterials, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<LibraryMaterials, never, never, [typeof i1.MatToolbarModule, typeof i2.MatIconModule, typeof i3.MatButtonModule, typeof i4.MatSidenavModule, typeof i5.MatListModule, typeof i6.MatGridListModule, typeof i7.MatFormFieldModule, typeof i8.MatInputModule, typeof i9.MatSelectModule, typeof i10.MatTableModule, typeof i11.MatSortModule, typeof i12.MatMenuModule, typeof i13.MatPaginatorModule, typeof i14.MatProgressSpinnerModule, typeof i15.MatDialogModule, typeof i5.MatListModule, typeof i16.MatExpansionModule, typeof i17.MatTooltipModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<LibraryMaterials, never, never, [typeof i1.MatToolbarModule, typeof i2.MatIconModule, typeof i3.MatButtonModule, typeof i4.MatSidenavModule, typeof i5.MatListModule, typeof i6.MatGridListModule, typeof i7.MatFormFieldModule, typeof i8.MatInputModule, typeof i9.MatSelectModule, typeof i10.MatTableModule, typeof i11.MatSortModule, typeof i12.MatMenuModule, typeof i13.MatPaginatorModule, typeof i14.MatProgressSpinnerModule, typeof i15.MatDialogModule, typeof i5.MatListModule, typeof i16.MatExpansionModule, typeof i17.MatTooltipModule, typeof i18.MatCheckboxModule]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<LibraryMaterials>;
 }
