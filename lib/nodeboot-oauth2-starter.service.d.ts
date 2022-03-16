@@ -22,7 +22,7 @@ export declare class NodebootOauth2StarterService {
         roles: BasicRole[];
     }): Observable<Object>;
     updatePassword(userId: number, newPassword: string, oldPassword: string): Observable<Object>;
-    updateUserRoles(userId: number, roles: BasicRole[]): Observable<Object>;
+    updateUserRoles(userId: number, roles: BasicRole[], originalRolesList: BasicRole[]): Observable<Object>;
     deleteUser(subjectId: number): Observable<Object>;
     updateUser(subjectId: number, updateBody: UserUpdateBody): Observable<Object>;
     getUserProfile(): Observable<UserProfileResult>;
@@ -43,7 +43,7 @@ export declare class NodebootOauth2StarterService {
         roles: BasicRole[];
     }, longLive: boolean): Observable<ClientCreateResult>;
     deleteClient(subjectId: number): Observable<Object>;
-    updateClientRoles(clientId: number, roles: BasicRole[]): Observable<Object>;
+    updateClientRoles(clientId: number, roles: BasicRole[], originalRolesList: BasicRole[]): Observable<Object>;
     updateClient(subjectId: number, updateBody: ClientUpdateBody): Observable<Object>;
     getApplications(): Observable<ApplicationResult>;
     getSecret(clientId: number): Observable<SecretTokenResponse>;
