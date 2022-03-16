@@ -2,7 +2,7 @@ import { OnDestroy, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
-import { Part, Role, Option, NodebootOauth2StarterService } from '../../nodeboot-oauth2-starter.service';
+import { Resource, Role, Option, NodebootOauth2StarterService } from '../../nodeboot-oauth2-starter.service';
 import * as i0 from "@angular/core";
 export declare class OptionsComponent implements OnInit, OnDestroy {
     dialogRef: MatDialogRef<OptionsComponent>;
@@ -11,7 +11,7 @@ export declare class OptionsComponent implements OnInit, OnDestroy {
     private formBuilder;
     optionsForm: FormGroup;
     errorMessage: string;
-    options: Part[];
+    options: Resource[];
     allowedShowList: Option[];
     allowedObject: Record<string, Option[]>;
     originalAllowedObject: Record<string, Option[]>;
@@ -23,7 +23,7 @@ export declare class OptionsComponent implements OnInit, OnDestroy {
         (value: any, replacer?: ((this: any, key: string, value: any) => any) | undefined, space?: string | number | undefined): string;
         (value: any, replacer?: (string | number)[] | null | undefined, space?: string | number | undefined): string;
     };
-    partSubscription: Subscription;
+    resourceSubscription: Subscription;
     constructor(dialogRef: MatDialogRef<OptionsComponent>, role: Role, nbService: NodebootOauth2StarterService, formBuilder: FormBuilder);
     ngOnInit(): void;
     ngOnDestroy(): void;

@@ -22,6 +22,7 @@ export declare class CreateClientComponent implements OnInit {
         name: string;
         identifier: string;
         role: string | undefined;
+        longLive?: boolean;
     }): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<CreateClientComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<CreateClientComponent, "lib-create-client", never, {}, {}, never, never>;

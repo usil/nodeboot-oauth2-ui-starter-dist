@@ -13,6 +13,7 @@ export declare class OauthStarterClientComponent implements OnInit {
     displayedColumns: string[];
     resultsLength: number;
     isLoadingResults: boolean;
+    wholePageLoading: boolean;
     reload: BehaviorSubject<number>;
     clientDataSubscription: Subscription;
     paginator: MatPaginator;
@@ -21,6 +22,11 @@ export declare class OauthStarterClientComponent implements OnInit {
     ngAfterViewInit(): void;
     ngOnInit(): void;
     ngOnDestroy(): void;
+    openShowSecretComponent(client: Client): void;
+    generateNewLongLiveToken(client: Client): void;
+    removeLongLiveToken(client: Client): void;
+    revokeClient(client: Client): void;
+    ratifyClient(client: Client): void;
     openCreateClientDialog(): void;
     openViewRolesDialog(client: Client): void;
     openUpdateRolesDialog(client: Client): void;
