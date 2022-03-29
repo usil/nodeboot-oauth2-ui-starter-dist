@@ -23,11 +23,12 @@ export declare class OptionsComponent implements OnInit, OnDestroy {
         (value: any, replacer?: ((this: any, key: string, value: any) => any) | undefined, space?: string | number | undefined): string;
         (value: any, replacer?: (string | number)[] | null | undefined, space?: string | number | undefined): string;
     };
+    selectedSubscription: Subscription;
     resourceSubscription: Subscription;
     constructor(dialogRef: MatDialogRef<OptionsComponent>, role: Role, nbService: NodebootOauth2StarterService, formBuilder: FormBuilder);
     ngOnInit(): void;
     ngOnDestroy(): void;
-    selectedChange(selected: boolean, value: string): void;
+    selectedChange(selected: boolean, value: Option): void;
     closeDialog(): void;
     updateOptions(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<OptionsComponent, never>;
