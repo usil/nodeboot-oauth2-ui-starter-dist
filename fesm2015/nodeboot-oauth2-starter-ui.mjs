@@ -478,9 +478,9 @@ class CreateUserComponent {
     }
     removeRoleToList(role) {
         const roleValue = role;
-        const indexOfRole = this.roles.indexOf(roleValue);
+        const indexOfRole = this.rolesList.indexOf(roleValue);
+        this.roles.unshift(role);
         this.rolesList.splice(indexOfRole, 1);
-        this.roles.push(roleValue);
     }
     closeDialog() {
         this.dialogRef.close();
@@ -562,7 +562,8 @@ class AddUserRolesComponent {
     }
     removeRoleToList(role) {
         const roleValue = role;
-        const indexOfRole = this.roles.indexOf(roleValue);
+        const indexOfRole = this.rolesList.indexOf(roleValue);
+        this.roles.unshift(role);
         this.rolesList.splice(indexOfRole, 1);
     }
     closeDialog() {
@@ -821,7 +822,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.1.2", ngImpor
 
 class CreateRoleComponent {
     constructor(formBuilder, nbService, dialogRef) {
-        var _a;
+        var _a, _b;
         this.formBuilder = formBuilder;
         this.nbService = nbService;
         this.dialogRef = dialogRef;
@@ -856,18 +857,66 @@ class CreateRoleComponent {
         this.resourceSubscription = (_a = this.createRoleForm
             .get('resource')) === null || _a === void 0 ? void 0 : _a.valueChanges.subscribe({
             next: (value) => {
-                var _a, _b, _c;
+                var _a, _b;
                 this.allowedShowList =
                     ((_a = this.options.find((o) => o.applicationResourceName === value)) === null || _a === void 0 ? void 0 : _a.allowed) || [];
                 (_b = this.createRoleForm
-                    .get('selected')) === null || _b === void 0 ? void 0 : _b.setValue(this.allowedObject[(_c = this.createRoleForm.get('resource')) === null || _c === void 0 ? void 0 : _c.value] ||
-                    []);
+                    .get('selected')) === null || _b === void 0 ? void 0 : _b.setValue(this.allowedObject[value] || []);
             },
+        });
+        this.selectedSubscription = (_b = this.createRoleForm
+            .get('selected')) === null || _b === void 0 ? void 0 : _b.valueChanges.subscribe((valueChange) => {
+            var _a;
+            const currentAllowedObject = this.allowedObject[(_a = this.createRoleForm.get('resource')) === null || _a === void 0 ? void 0 : _a.value] || [];
+            if (valueChange.length === 0 && currentAllowedObject.length === 0)
+                return;
+            let newOptionEntry;
+            if (currentAllowedObject.length === 0) {
+                newOptionEntry = valueChange[0];
+                this.selectedChange(true, newOptionEntry);
+                return;
+            }
+            if (valueChange.length === 0) {
+                newOptionEntry = currentAllowedObject[0];
+                this.selectedChange(false, newOptionEntry);
+                return;
+            }
+            if (currentAllowedObject[0].allowed === '*' &&
+                valueChange[0].allowed !== '*') {
+                newOptionEntry = currentAllowedObject[0];
+                this.selectedChange(false, newOptionEntry);
+                return;
+            }
+            if (valueChange[0].allowed === '*') {
+                newOptionEntry = valueChange[0];
+                this.selectedChange(true, newOptionEntry);
+                return;
+            }
+            if (currentAllowedObject.length > valueChange.length) {
+                for (const allowed of currentAllowedObject) {
+                    const indexOfAllowed = valueChange.findIndex((v) => v.id === allowed.id);
+                    if (indexOfAllowed === -1) {
+                        newOptionEntry = allowed;
+                        this.selectedChange(false, newOptionEntry);
+                        break;
+                    }
+                }
+                return;
+            }
+            for (const value of valueChange) {
+                const indexOfAllowed = currentAllowedObject.findIndex((c) => c.id === value.id);
+                if (indexOfAllowed === -1) {
+                    newOptionEntry = value;
+                    this.selectedChange(true, newOptionEntry);
+                    break;
+                }
+            }
         });
     }
     ngOnDestroy() {
-        var _a;
+        var _a, _b;
         (_a = this.resourceSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        (_b = this.selectedSubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
     }
     ngOnInit() { }
     createRole(roleBody) {
@@ -889,44 +938,35 @@ class CreateRoleComponent {
         });
     }
     selectedChange(selected, value) {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
-        const currentAllowedObject = this.allowedObject[(_a = this.createRoleForm.get('resource')) === null || _a === void 0 ? void 0 : _a.value];
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        // const currentAllowedObject =
+        //   this.allowedObject[this.createRoleForm.get('resource')?.value];
         if (value.allowed === '*' &&
             selected &&
-            ((_b = this.createRoleForm.get('selected')) === null || _b === void 0 ? void 0 : _b.value.length) !==
+            ((_a = this.createRoleForm.get('selected')) === null || _a === void 0 ? void 0 : _a.value.length) !==
                 this.allowedShowList.length) {
-            (_c = this.createRoleForm.get('selected')) === null || _c === void 0 ? void 0 : _c.setValue(this.allowedShowList);
-            this.allowedObject[(_d = this.createRoleForm.get('resource')) === null || _d === void 0 ? void 0 : _d.value] = [
+            (_b = this.createRoleForm.get('selected')) === null || _b === void 0 ? void 0 : _b.setValue(this.allowedShowList);
+            this.allowedObject[(_c = this.createRoleForm.get('resource')) === null || _c === void 0 ? void 0 : _c.value] = [
                 this.allowedShowList[0],
             ];
         }
         else if (value.allowed === '*' && !selected) {
             const temporalAllowed = [...this.allowedShowList];
             temporalAllowed.shift();
-            this.allowedObject[(_e = this.createRoleForm.get('resource')) === null || _e === void 0 ? void 0 : _e.value] =
+            this.allowedObject[(_d = this.createRoleForm.get('resource')) === null || _d === void 0 ? void 0 : _d.value] =
                 temporalAllowed;
         }
         else if (selected) {
-            if (!(currentAllowedObject && currentAllowedObject[0].allowed === '*')) {
-                if (currentAllowedObject &&
-                    currentAllowedObject.findIndex((ca) => ca.id === value.id)) {
-                    currentAllowedObject.push(value);
-                }
-                else {
-                    this.allowedObject[(_f = this.createRoleForm.get('resource')) === null || _f === void 0 ? void 0 : _f.value] = [
-                        value,
-                    ];
-                }
-            }
+            this.allowedObject[(_e = this.createRoleForm.get('resource')) === null || _e === void 0 ? void 0 : _e.value] =
+                (_f = this.createRoleForm.get('selected')) === null || _f === void 0 ? void 0 : _f.value;
         }
         else {
-            const indexOfValue = (_g = this.createRoleForm
-                .get('selected')) === null || _g === void 0 ? void 0 : _g.value.indexOf(value);
-            if (currentAllowedObject && indexOfValue !== -1) {
-                currentAllowedObject.splice(indexOfValue, 1);
-            }
-            if (currentAllowedObject && currentAllowedObject.length === 0) {
+            if (((_g = this.createRoleForm.get('selected')) === null || _g === void 0 ? void 0 : _g.value.length) === 0) {
                 delete this.allowedObject[(_h = this.createRoleForm.get('resource')) === null || _h === void 0 ? void 0 : _h.value];
+            }
+            else {
+                this.allowedObject[(_j = this.createRoleForm.get('resource')) === null || _j === void 0 ? void 0 : _j.value] =
+                    (_k = this.createRoleForm.get('selected')) === null || _k === void 0 ? void 0 : _k.value;
             }
         }
     }
@@ -935,10 +975,10 @@ class CreateRoleComponent {
     }
 }
 CreateRoleComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: CreateRoleComponent, deps: [{ token: i2.FormBuilder }, { token: NodebootOauth2StarterService }, { token: i1$1.MatDialogRef }], target: i0.ɵɵFactoryTarget.Component });
-CreateRoleComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "13.1.2", type: CreateRoleComponent, selector: "lib-create-role", ngImport: i0, template: "<h2 mat-dialog-title>Create Role</h2>\n<form\n  [formGroup]=\"createRoleForm\"\n  (ngSubmit)=\"createRole(createRoleForm.value)\"\n>\n  <div mat-dialog-content>\n    <div class=\"error-display\" *ngIf=\"errorMessage\">\n      <h5>{{ errorMessage }}</h5>\n    </div>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Identifier</mat-label>\n      <input\n        matInput\n        placeholder=\"admin01\"\n        formControlName=\"identifier\"\n        name=\"identifier\"\n        required\n      />\n      <mat-hint>A role identifier</mat-hint>\n    </mat-form-field>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Select a resource</mat-label>\n      <mat-select name=\"resource\" formControlName=\"resource\">\n        <mat-option\n          [value]=\"option.applicationResourceName\"\n          *ngFor=\"let option of options\"\n          >{{ option.applicationResourceName }}</mat-option\n        >\n      </mat-select>\n      <mat-hint>Select an application resource</mat-hint>\n    </mat-form-field>\n    <mat-selection-list #allowed formControlName=\"selected\">\n      <mat-list-option\n        (selectedChange)=\"selectedChange($event, allowedL)\"\n        [value]=\"allowedL\"\n        [disabled]=\"\n          allowedL.allowed !== '*' &&\n          createRoleForm.get('selected')?.value.length ===\n            allowedShowList.length\n            ? true\n            : false\n        \"\n        *ngFor=\"let allowedL of allowedShowList\"\n      >\n        {{ allowedL.allowed }}\n      </mat-list-option>\n    </mat-selection-list>\n  </div>\n  <div align=\"end\" mat-dialog-actions>\n    <button\n      (click)=\"closeDialog()\"\n      type=\"button\"\n      color=\"warn\"\n      mat-stroked-button\n      [disabled]=\"dialogRef.disableClose\"\n    >\n      Cancel</button\n    ><button\n      [disabled]=\"\n        !createRoleForm.valid || objectKeys(allowedObject).length === 0\n      \"\n      color=\"primary\"\n      mat-flat-button\n    >\n      Create\n    </button>\n  </div>\n</form>\n", styles: [".forms-field{width:100%;margin-bottom:1rem}\n"], components: [{ type: i4.MatFormField, selector: "mat-form-field", inputs: ["color", "appearance", "hideRequiredMarker", "hintLabel", "floatLabel"], exportAs: ["matFormField"] }, { type: i5$1.MatSelect, selector: "mat-select", inputs: ["disabled", "disableRipple", "tabIndex"], exportAs: ["matSelect"] }, { type: i6.MatOption, selector: "mat-option", exportAs: ["matOption"] }, { type: i3$1.MatSelectionList, selector: "mat-selection-list", inputs: ["disableRipple", "tabIndex", "color", "compareWith", "disabled", "multiple"], outputs: ["selectionChange"], exportAs: ["matSelectionList"] }, { type: i3$1.MatListOption, selector: "mat-list-option", inputs: ["disableRipple", "checkboxPosition", "color", "value", "disabled", "selected"], outputs: ["selectedChange"], exportAs: ["matListOption"] }, { type: i3.MatButton, selector: "button[mat-button], button[mat-raised-button], button[mat-icon-button],             button[mat-fab], button[mat-mini-fab], button[mat-stroked-button],             button[mat-flat-button]", inputs: ["disabled", "disableRipple", "color"], exportAs: ["matButton"] }], directives: [{ type: i1$1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { type: i2.ɵNgNoValidate, selector: "form:not([ngNoForm]):not([ngNativeValidate])" }, { type: i2.NgControlStatusGroup, selector: "[formGroupName],[formArrayName],[ngModelGroup],[formGroup],form:not([ngNoForm]),[ngForm]" }, { type: i2.FormGroupDirective, selector: "[formGroup]", inputs: ["formGroup"], outputs: ["ngSubmit"], exportAs: ["ngForm"] }, { type: i1$1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { type: i8.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { type: i4.MatLabel, selector: "mat-label" }, { type: i10.MatInput, selector: "input[matInput], textarea[matInput], select[matNativeControl],      input[matNativeControl], textarea[matNativeControl]", inputs: ["disabled", "id", "placeholder", "required", "type", "errorStateMatcher", "aria-describedby", "value", "readonly"], exportAs: ["matInput"] }, { type: i2.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { type: i2.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { type: i2.FormControlName, selector: "[formControlName]", inputs: ["formControlName", "disabled", "ngModel"], outputs: ["ngModelChange"] }, { type: i2.RequiredValidator, selector: ":not([type=checkbox])[required][formControlName],:not([type=checkbox])[required][formControl],:not([type=checkbox])[required][ngModel]", inputs: ["required"] }, { type: i4.MatHint, selector: "mat-hint", inputs: ["align", "id"] }, { type: i8.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { type: i1$1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]" }] });
+CreateRoleComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "13.1.2", type: CreateRoleComponent, selector: "lib-create-role", ngImport: i0, template: "<h2 mat-dialog-title>Create Role</h2>\n<form\n  [formGroup]=\"createRoleForm\"\n  (ngSubmit)=\"createRole(createRoleForm.value)\"\n>\n  <div mat-dialog-content>\n    <div class=\"error-display\" *ngIf=\"errorMessage\">\n      <h5>{{ errorMessage }}</h5>\n    </div>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Identifier</mat-label>\n      <input\n        matInput\n        placeholder=\"admin01\"\n        formControlName=\"identifier\"\n        name=\"identifier\"\n        required\n      />\n      <mat-hint>A role identifier</mat-hint>\n    </mat-form-field>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Select a resource</mat-label>\n      <mat-select name=\"resource\" formControlName=\"resource\">\n        <mat-option\n          [value]=\"option.applicationResourceName\"\n          *ngFor=\"let option of options\"\n          >{{ option.applicationResourceName }}</mat-option\n        >\n      </mat-select>\n      <mat-hint>Select an application resource</mat-hint>\n    </mat-form-field>\n    <mat-selection-list #allowed formControlName=\"selected\">\n      <mat-list-option\n        [value]=\"allowedL\"\n        [disabled]=\"\n          allowedL.allowed !== '*' &&\n          createRoleForm.get('selected')?.value.length ===\n            allowedShowList.length\n            ? true\n            : false\n        \"\n        *ngFor=\"let allowedL of allowedShowList\"\n      >\n        {{ allowedL.allowed }}\n      </mat-list-option>\n    </mat-selection-list>\n  </div>\n  <div align=\"end\" mat-dialog-actions>\n    <button\n      (click)=\"closeDialog()\"\n      type=\"button\"\n      color=\"warn\"\n      mat-stroked-button\n      [disabled]=\"dialogRef.disableClose\"\n    >\n      Cancel</button\n    ><button\n      [disabled]=\"\n        !createRoleForm.valid || objectKeys(allowedObject).length === 0\n      \"\n      color=\"primary\"\n      mat-flat-button\n    >\n      Create\n    </button>\n  </div>\n</form>\n", styles: [".forms-field{width:100%;margin-bottom:1rem}\n"], components: [{ type: i4.MatFormField, selector: "mat-form-field", inputs: ["color", "appearance", "hideRequiredMarker", "hintLabel", "floatLabel"], exportAs: ["matFormField"] }, { type: i5$1.MatSelect, selector: "mat-select", inputs: ["disabled", "disableRipple", "tabIndex"], exportAs: ["matSelect"] }, { type: i6.MatOption, selector: "mat-option", exportAs: ["matOption"] }, { type: i3$1.MatSelectionList, selector: "mat-selection-list", inputs: ["disableRipple", "tabIndex", "color", "compareWith", "disabled", "multiple"], outputs: ["selectionChange"], exportAs: ["matSelectionList"] }, { type: i3$1.MatListOption, selector: "mat-list-option", inputs: ["disableRipple", "checkboxPosition", "color", "value", "disabled", "selected"], outputs: ["selectedChange"], exportAs: ["matListOption"] }, { type: i3.MatButton, selector: "button[mat-button], button[mat-raised-button], button[mat-icon-button],             button[mat-fab], button[mat-mini-fab], button[mat-stroked-button],             button[mat-flat-button]", inputs: ["disabled", "disableRipple", "color"], exportAs: ["matButton"] }], directives: [{ type: i1$1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { type: i2.ɵNgNoValidate, selector: "form:not([ngNoForm]):not([ngNativeValidate])" }, { type: i2.NgControlStatusGroup, selector: "[formGroupName],[formArrayName],[ngModelGroup],[formGroup],form:not([ngNoForm]),[ngForm]" }, { type: i2.FormGroupDirective, selector: "[formGroup]", inputs: ["formGroup"], outputs: ["ngSubmit"], exportAs: ["ngForm"] }, { type: i1$1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { type: i8.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { type: i4.MatLabel, selector: "mat-label" }, { type: i10.MatInput, selector: "input[matInput], textarea[matInput], select[matNativeControl],      input[matNativeControl], textarea[matNativeControl]", inputs: ["disabled", "id", "placeholder", "required", "type", "errorStateMatcher", "aria-describedby", "value", "readonly"], exportAs: ["matInput"] }, { type: i2.DefaultValueAccessor, selector: "input:not([type=checkbox])[formControlName],textarea[formControlName],input:not([type=checkbox])[formControl],textarea[formControl],input:not([type=checkbox])[ngModel],textarea[ngModel],[ngDefaultControl]" }, { type: i2.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { type: i2.FormControlName, selector: "[formControlName]", inputs: ["formControlName", "disabled", "ngModel"], outputs: ["ngModelChange"] }, { type: i2.RequiredValidator, selector: ":not([type=checkbox])[required][formControlName],:not([type=checkbox])[required][formControl],:not([type=checkbox])[required][ngModel]", inputs: ["required"] }, { type: i4.MatHint, selector: "mat-hint", inputs: ["align", "id"] }, { type: i8.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { type: i1$1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]" }] });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: CreateRoleComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'lib-create-role', template: "<h2 mat-dialog-title>Create Role</h2>\n<form\n  [formGroup]=\"createRoleForm\"\n  (ngSubmit)=\"createRole(createRoleForm.value)\"\n>\n  <div mat-dialog-content>\n    <div class=\"error-display\" *ngIf=\"errorMessage\">\n      <h5>{{ errorMessage }}</h5>\n    </div>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Identifier</mat-label>\n      <input\n        matInput\n        placeholder=\"admin01\"\n        formControlName=\"identifier\"\n        name=\"identifier\"\n        required\n      />\n      <mat-hint>A role identifier</mat-hint>\n    </mat-form-field>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Select a resource</mat-label>\n      <mat-select name=\"resource\" formControlName=\"resource\">\n        <mat-option\n          [value]=\"option.applicationResourceName\"\n          *ngFor=\"let option of options\"\n          >{{ option.applicationResourceName }}</mat-option\n        >\n      </mat-select>\n      <mat-hint>Select an application resource</mat-hint>\n    </mat-form-field>\n    <mat-selection-list #allowed formControlName=\"selected\">\n      <mat-list-option\n        (selectedChange)=\"selectedChange($event, allowedL)\"\n        [value]=\"allowedL\"\n        [disabled]=\"\n          allowedL.allowed !== '*' &&\n          createRoleForm.get('selected')?.value.length ===\n            allowedShowList.length\n            ? true\n            : false\n        \"\n        *ngFor=\"let allowedL of allowedShowList\"\n      >\n        {{ allowedL.allowed }}\n      </mat-list-option>\n    </mat-selection-list>\n  </div>\n  <div align=\"end\" mat-dialog-actions>\n    <button\n      (click)=\"closeDialog()\"\n      type=\"button\"\n      color=\"warn\"\n      mat-stroked-button\n      [disabled]=\"dialogRef.disableClose\"\n    >\n      Cancel</button\n    ><button\n      [disabled]=\"\n        !createRoleForm.valid || objectKeys(allowedObject).length === 0\n      \"\n      color=\"primary\"\n      mat-flat-button\n    >\n      Create\n    </button>\n  </div>\n</form>\n", styles: [".forms-field{width:100%;margin-bottom:1rem}\n"] }]
+            args: [{ selector: 'lib-create-role', template: "<h2 mat-dialog-title>Create Role</h2>\n<form\n  [formGroup]=\"createRoleForm\"\n  (ngSubmit)=\"createRole(createRoleForm.value)\"\n>\n  <div mat-dialog-content>\n    <div class=\"error-display\" *ngIf=\"errorMessage\">\n      <h5>{{ errorMessage }}</h5>\n    </div>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Identifier</mat-label>\n      <input\n        matInput\n        placeholder=\"admin01\"\n        formControlName=\"identifier\"\n        name=\"identifier\"\n        required\n      />\n      <mat-hint>A role identifier</mat-hint>\n    </mat-form-field>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Select a resource</mat-label>\n      <mat-select name=\"resource\" formControlName=\"resource\">\n        <mat-option\n          [value]=\"option.applicationResourceName\"\n          *ngFor=\"let option of options\"\n          >{{ option.applicationResourceName }}</mat-option\n        >\n      </mat-select>\n      <mat-hint>Select an application resource</mat-hint>\n    </mat-form-field>\n    <mat-selection-list #allowed formControlName=\"selected\">\n      <mat-list-option\n        [value]=\"allowedL\"\n        [disabled]=\"\n          allowedL.allowed !== '*' &&\n          createRoleForm.get('selected')?.value.length ===\n            allowedShowList.length\n            ? true\n            : false\n        \"\n        *ngFor=\"let allowedL of allowedShowList\"\n      >\n        {{ allowedL.allowed }}\n      </mat-list-option>\n    </mat-selection-list>\n  </div>\n  <div align=\"end\" mat-dialog-actions>\n    <button\n      (click)=\"closeDialog()\"\n      type=\"button\"\n      color=\"warn\"\n      mat-stroked-button\n      [disabled]=\"dialogRef.disableClose\"\n    >\n      Cancel</button\n    ><button\n      [disabled]=\"\n        !createRoleForm.valid || objectKeys(allowedObject).length === 0\n      \"\n      color=\"primary\"\n      mat-flat-button\n    >\n      Create\n    </button>\n  </div>\n</form>\n", styles: [".forms-field{width:100%;margin-bottom:1rem}\n"] }]
         }], ctorParameters: function () { return [{ type: i2.FormBuilder }, { type: NodebootOauth2StarterService }, { type: i1$1.MatDialogRef }]; } });
 
 class DeleteRoleComponent {
@@ -983,7 +1023,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.1.2", ngImpor
 
 class OptionsComponent {
     constructor(dialogRef, role, nbService, formBuilder) {
-        var _a;
+        var _a, _b;
         this.dialogRef = dialogRef;
         this.role = role;
         this.nbService = nbService;
@@ -1028,54 +1068,92 @@ class OptionsComponent {
                     .get('selected')) === null || _b === void 0 ? void 0 : _b.setValue(((_d = this.allowedObject[(_c = this.optionsForm.get('resource')) === null || _c === void 0 ? void 0 : _c.value]) === null || _d === void 0 ? void 0 : _d.map((asl) => JSON.stringify(asl))) || []);
             },
         });
+        this.selectedSubscription = (_b = this.optionsForm
+            .get('selected')) === null || _b === void 0 ? void 0 : _b.valueChanges.subscribe((valueChange) => {
+            var _a;
+            const currentAllowedObject = this.allowedObject[(_a = this.optionsForm.get('resource')) === null || _a === void 0 ? void 0 : _a.value] || [];
+            if (valueChange.length === 0 && currentAllowedObject.length === 0)
+                return;
+            let newOptionEntry;
+            if (currentAllowedObject.length === 0) {
+                newOptionEntry = JSON.parse(valueChange[0]);
+                this.selectedChange(true, newOptionEntry);
+                return;
+            }
+            if (valueChange.length === 0) {
+                newOptionEntry = currentAllowedObject[0];
+                this.selectedChange(false, newOptionEntry);
+                return;
+            }
+            if (currentAllowedObject[0].allowed === '*' &&
+                JSON.parse(valueChange[0]).allowed !== '*') {
+                newOptionEntry = currentAllowedObject[0];
+                this.selectedChange(false, newOptionEntry);
+                return;
+            }
+            if (JSON.parse(valueChange[0]).allowed === '*') {
+                newOptionEntry = JSON.parse(valueChange[0]);
+                this.selectedChange(true, newOptionEntry);
+                return;
+            }
+            if (currentAllowedObject.length > valueChange.length) {
+                for (const allowed of currentAllowedObject) {
+                    const indexOfAllowed = valueChange.findIndex((v) => JSON.parse(v).id === allowed.id);
+                    if (indexOfAllowed === -1) {
+                        newOptionEntry = allowed;
+                        this.selectedChange(false, newOptionEntry);
+                        break;
+                    }
+                }
+                return;
+            }
+            for (const value of valueChange) {
+                const indexOfAllowed = currentAllowedObject.findIndex((c) => c.id === JSON.parse(value).id);
+                if (indexOfAllowed === -1) {
+                    newOptionEntry = JSON.parse(value);
+                    this.selectedChange(true, newOptionEntry);
+                    break;
+                }
+            }
+        });
     }
     ngOnInit() { }
     ngOnDestroy() {
-        var _a;
+        var _a, _b;
         (_a = this.resourceSubscription) === null || _a === void 0 ? void 0 : _a.unsubscribe();
+        (_b = this.selectedSubscription) === null || _b === void 0 ? void 0 : _b.unsubscribe();
     }
     selectedChange(selected, value) {
-        var _a, _b, _c, _d, _e, _f, _g, _h;
-        const parsedValue = JSON.parse(value);
-        const currentAllowedObject = this.allowedObject[(_a = this.optionsForm.get('resource')) === null || _a === void 0 ? void 0 : _a.value];
-        if (parsedValue.allowed === '*' &&
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k;
+        if (value.allowed === '*' &&
             selected &&
-            ((_b = this.optionsForm.get('selected')) === null || _b === void 0 ? void 0 : _b.value.length) !==
+            ((_a = this.optionsForm.get('selected')) === null || _a === void 0 ? void 0 : _a.value.length) !==
                 this.allowedShowList.length) {
-            (_c = this.optionsForm
-                .get('selected')) === null || _c === void 0 ? void 0 : _c.setValue(this.allowedShowList.map((asl) => JSON.stringify(asl)));
-            this.allowedObject[(_d = this.optionsForm.get('resource')) === null || _d === void 0 ? void 0 : _d.value] = [
+            (_b = this.optionsForm
+                .get('selected')) === null || _b === void 0 ? void 0 : _b.setValue(this.allowedShowList.map((aso) => JSON.stringify(aso)) || []);
+            this.allowedObject[(_c = this.optionsForm.get('resource')) === null || _c === void 0 ? void 0 : _c.value] = [
                 this.allowedShowList[0],
             ];
         }
-        else if (parsedValue.allowed === '*' && !selected) {
+        else if (value.allowed === '*' && !selected) {
             const temporalAllowed = [...this.allowedShowList];
             temporalAllowed.shift();
-            this.allowedObject[(_e = this.optionsForm.get('resource')) === null || _e === void 0 ? void 0 : _e.value] =
+            this.allowedObject[(_d = this.optionsForm.get('resource')) === null || _d === void 0 ? void 0 : _d.value] =
                 temporalAllowed;
         }
         else if (selected) {
-            if (!(currentAllowedObject && currentAllowedObject[0].allowed === '*')) {
-                if (currentAllowedObject &&
-                    currentAllowedObject.findIndex((ca) => ca.id === parsedValue.id) ===
-                        -1) {
-                    currentAllowedObject.push(parsedValue);
-                }
-                else {
-                    this.allowedObject[(_f = this.optionsForm.get('resource')) === null || _f === void 0 ? void 0 : _f.value] = [
-                        parsedValue,
-                    ];
-                }
-            }
+            this.allowedObject[(_e = this.optionsForm.get('resource')) === null || _e === void 0 ? void 0 : _e.value] = (_f = this.optionsForm.get('selected')) === null || _f === void 0 ? void 0 : _f.value.map((stringObj) => {
+                return JSON.parse(stringObj);
+            });
         }
         else {
-            const indexOfValue = (_g = this.optionsForm
-                .get('selected')) === null || _g === void 0 ? void 0 : _g.value.indexOf(parsedValue);
-            if (currentAllowedObject && indexOfValue !== -1) {
-                currentAllowedObject.splice(indexOfValue, 1);
-            }
-            if (currentAllowedObject && currentAllowedObject.length === 0) {
+            if (((_g = this.optionsForm.get('selected')) === null || _g === void 0 ? void 0 : _g.value.length) === 0) {
                 delete this.allowedObject[(_h = this.optionsForm.get('resource')) === null || _h === void 0 ? void 0 : _h.value];
+            }
+            else {
+                this.allowedObject[(_j = this.optionsForm.get('resource')) === null || _j === void 0 ? void 0 : _j.value] = (_k = this.optionsForm.get('selected')) === null || _k === void 0 ? void 0 : _k.value.map((stringObj) => {
+                    return JSON.parse(stringObj);
+                });
             }
         }
     }
@@ -1102,10 +1180,10 @@ class OptionsComponent {
     }
 }
 OptionsComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: OptionsComponent, deps: [{ token: i1$1.MatDialogRef }, { token: MAT_DIALOG_DATA }, { token: NodebootOauth2StarterService }, { token: i2.FormBuilder }], target: i0.ɵɵFactoryTarget.Component });
-OptionsComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "13.1.2", type: OptionsComponent, selector: "lib-options", ngImport: i0, template: "<h2 mat-dialog-title>Role {{ role.identifier }} access options</h2>\n<form [formGroup]=\"optionsForm\" (ngSubmit)=\"updateOptions()\">\n  <div mat-dialog-content>\n    <div class=\"error-display\" *ngIf=\"errorMessage\">\n      <h5>{{ errorMessage }}</h5>\n    </div>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Select a resource</mat-label>\n      <mat-select name=\"resource\" formControlName=\"resource\">\n        <mat-option\n          [value]=\"option.applicationResourceName\"\n          *ngFor=\"let option of options\"\n          >{{ option.applicationResourceName }}</mat-option\n        >\n      </mat-select>\n      <mat-hint>Select an application resource</mat-hint>\n    </mat-form-field>\n    <mat-selection-list #allowed formControlName=\"selected\">\n      <mat-list-option\n        (selectedChange)=\"selectedChange($event, convertToString(allowedL))\"\n        [value]=\"convertToString(allowedL)\"\n        [disabled]=\"\n          allowedL.allowed !== '*' &&\n          optionsForm.get('selected')?.value.length === allowedShowList.length\n            ? true\n            : false\n        \"\n        *ngFor=\"let allowedL of allowedShowList\"\n      >\n        {{ allowedL.allowed }}\n      </mat-list-option>\n    </mat-selection-list>\n  </div>\n  <div align=\"end\" mat-dialog-actions>\n    <button\n      (click)=\"closeDialog()\"\n      type=\"button\"\n      color=\"warn\"\n      mat-stroked-button\n      [disabled]=\"dialogRef.disableClose\"\n    >\n      Cancel</button\n    ><button\n      [disabled]=\"!optionsForm.valid || objectKeys(allowedObject).length === 0\"\n      color=\"primary\"\n      mat-flat-button\n    >\n      Update\n    </button>\n  </div>\n</form>\n", styles: [".forms-field{width:100%;margin-bottom:1rem}\n"], components: [{ type: i4.MatFormField, selector: "mat-form-field", inputs: ["color", "appearance", "hideRequiredMarker", "hintLabel", "floatLabel"], exportAs: ["matFormField"] }, { type: i5$1.MatSelect, selector: "mat-select", inputs: ["disabled", "disableRipple", "tabIndex"], exportAs: ["matSelect"] }, { type: i6.MatOption, selector: "mat-option", exportAs: ["matOption"] }, { type: i3$1.MatSelectionList, selector: "mat-selection-list", inputs: ["disableRipple", "tabIndex", "color", "compareWith", "disabled", "multiple"], outputs: ["selectionChange"], exportAs: ["matSelectionList"] }, { type: i3$1.MatListOption, selector: "mat-list-option", inputs: ["disableRipple", "checkboxPosition", "color", "value", "disabled", "selected"], outputs: ["selectedChange"], exportAs: ["matListOption"] }, { type: i3.MatButton, selector: "button[mat-button], button[mat-raised-button], button[mat-icon-button],             button[mat-fab], button[mat-mini-fab], button[mat-stroked-button],             button[mat-flat-button]", inputs: ["disabled", "disableRipple", "color"], exportAs: ["matButton"] }], directives: [{ type: i1$1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { type: i2.ɵNgNoValidate, selector: "form:not([ngNoForm]):not([ngNativeValidate])" }, { type: i2.NgControlStatusGroup, selector: "[formGroupName],[formArrayName],[ngModelGroup],[formGroup],form:not([ngNoForm]),[ngForm]" }, { type: i2.FormGroupDirective, selector: "[formGroup]", inputs: ["formGroup"], outputs: ["ngSubmit"], exportAs: ["ngForm"] }, { type: i1$1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { type: i8.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { type: i4.MatLabel, selector: "mat-label" }, { type: i2.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { type: i2.FormControlName, selector: "[formControlName]", inputs: ["formControlName", "disabled", "ngModel"], outputs: ["ngModelChange"] }, { type: i8.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { type: i4.MatHint, selector: "mat-hint", inputs: ["align", "id"] }, { type: i1$1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]" }] });
+OptionsComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "13.1.2", type: OptionsComponent, selector: "lib-options", ngImport: i0, template: "<h2 mat-dialog-title>Role {{ role.identifier }} access options</h2>\n<form [formGroup]=\"optionsForm\" (ngSubmit)=\"updateOptions()\">\n  <div mat-dialog-content>\n    <div class=\"error-display\" *ngIf=\"errorMessage\">\n      <h5>{{ errorMessage }}</h5>\n    </div>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Select a resource</mat-label>\n      <mat-select name=\"resource\" formControlName=\"resource\">\n        <mat-option\n          [value]=\"option.applicationResourceName\"\n          *ngFor=\"let option of options\"\n          >{{ option.applicationResourceName }}</mat-option\n        >\n      </mat-select>\n      <mat-hint>Select an application resource</mat-hint>\n    </mat-form-field>\n    <mat-selection-list #allowed formControlName=\"selected\">\n      <mat-list-option\n        [value]=\"convertToString(allowedL)\"\n        [disabled]=\"\n          allowedL.allowed !== '*' &&\n          optionsForm.get('selected')?.value.length === allowedShowList.length\n            ? true\n            : false\n        \"\n        *ngFor=\"let allowedL of allowedShowList\"\n      >\n        {{ allowedL.allowed }}\n      </mat-list-option>\n    </mat-selection-list>\n  </div>\n  <div align=\"end\" mat-dialog-actions>\n    <button\n      (click)=\"closeDialog()\"\n      type=\"button\"\n      color=\"warn\"\n      mat-stroked-button\n      [disabled]=\"dialogRef.disableClose\"\n    >\n      Cancel</button\n    ><button\n      [disabled]=\"!optionsForm.valid || objectKeys(allowedObject).length === 0\"\n      color=\"primary\"\n      mat-flat-button\n    >\n      Update\n    </button>\n  </div>\n</form>\n", styles: [".forms-field{width:100%;margin-bottom:1rem}\n"], components: [{ type: i4.MatFormField, selector: "mat-form-field", inputs: ["color", "appearance", "hideRequiredMarker", "hintLabel", "floatLabel"], exportAs: ["matFormField"] }, { type: i5$1.MatSelect, selector: "mat-select", inputs: ["disabled", "disableRipple", "tabIndex"], exportAs: ["matSelect"] }, { type: i6.MatOption, selector: "mat-option", exportAs: ["matOption"] }, { type: i3$1.MatSelectionList, selector: "mat-selection-list", inputs: ["disableRipple", "tabIndex", "color", "compareWith", "disabled", "multiple"], outputs: ["selectionChange"], exportAs: ["matSelectionList"] }, { type: i3$1.MatListOption, selector: "mat-list-option", inputs: ["disableRipple", "checkboxPosition", "color", "value", "disabled", "selected"], outputs: ["selectedChange"], exportAs: ["matListOption"] }, { type: i3.MatButton, selector: "button[mat-button], button[mat-raised-button], button[mat-icon-button],             button[mat-fab], button[mat-mini-fab], button[mat-stroked-button],             button[mat-flat-button]", inputs: ["disabled", "disableRipple", "color"], exportAs: ["matButton"] }], directives: [{ type: i1$1.MatDialogTitle, selector: "[mat-dialog-title], [matDialogTitle]", inputs: ["id"], exportAs: ["matDialogTitle"] }, { type: i2.ɵNgNoValidate, selector: "form:not([ngNoForm]):not([ngNativeValidate])" }, { type: i2.NgControlStatusGroup, selector: "[formGroupName],[formArrayName],[ngModelGroup],[formGroup],form:not([ngNoForm]),[ngForm]" }, { type: i2.FormGroupDirective, selector: "[formGroup]", inputs: ["formGroup"], outputs: ["ngSubmit"], exportAs: ["ngForm"] }, { type: i1$1.MatDialogContent, selector: "[mat-dialog-content], mat-dialog-content, [matDialogContent]" }, { type: i8.NgIf, selector: "[ngIf]", inputs: ["ngIf", "ngIfThen", "ngIfElse"] }, { type: i4.MatLabel, selector: "mat-label" }, { type: i2.NgControlStatus, selector: "[formControlName],[ngModel],[formControl]" }, { type: i2.FormControlName, selector: "[formControlName]", inputs: ["formControlName", "disabled", "ngModel"], outputs: ["ngModelChange"] }, { type: i8.NgForOf, selector: "[ngFor][ngForOf]", inputs: ["ngForOf", "ngForTrackBy", "ngForTemplate"] }, { type: i4.MatHint, selector: "mat-hint", inputs: ["align", "id"] }, { type: i1$1.MatDialogActions, selector: "[mat-dialog-actions], mat-dialog-actions, [matDialogActions]" }] });
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: OptionsComponent, decorators: [{
             type: Component,
-            args: [{ selector: 'lib-options', template: "<h2 mat-dialog-title>Role {{ role.identifier }} access options</h2>\n<form [formGroup]=\"optionsForm\" (ngSubmit)=\"updateOptions()\">\n  <div mat-dialog-content>\n    <div class=\"error-display\" *ngIf=\"errorMessage\">\n      <h5>{{ errorMessage }}</h5>\n    </div>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Select a resource</mat-label>\n      <mat-select name=\"resource\" formControlName=\"resource\">\n        <mat-option\n          [value]=\"option.applicationResourceName\"\n          *ngFor=\"let option of options\"\n          >{{ option.applicationResourceName }}</mat-option\n        >\n      </mat-select>\n      <mat-hint>Select an application resource</mat-hint>\n    </mat-form-field>\n    <mat-selection-list #allowed formControlName=\"selected\">\n      <mat-list-option\n        (selectedChange)=\"selectedChange($event, convertToString(allowedL))\"\n        [value]=\"convertToString(allowedL)\"\n        [disabled]=\"\n          allowedL.allowed !== '*' &&\n          optionsForm.get('selected')?.value.length === allowedShowList.length\n            ? true\n            : false\n        \"\n        *ngFor=\"let allowedL of allowedShowList\"\n      >\n        {{ allowedL.allowed }}\n      </mat-list-option>\n    </mat-selection-list>\n  </div>\n  <div align=\"end\" mat-dialog-actions>\n    <button\n      (click)=\"closeDialog()\"\n      type=\"button\"\n      color=\"warn\"\n      mat-stroked-button\n      [disabled]=\"dialogRef.disableClose\"\n    >\n      Cancel</button\n    ><button\n      [disabled]=\"!optionsForm.valid || objectKeys(allowedObject).length === 0\"\n      color=\"primary\"\n      mat-flat-button\n    >\n      Update\n    </button>\n  </div>\n</form>\n", styles: [".forms-field{width:100%;margin-bottom:1rem}\n"] }]
+            args: [{ selector: 'lib-options', template: "<h2 mat-dialog-title>Role {{ role.identifier }} access options</h2>\n<form [formGroup]=\"optionsForm\" (ngSubmit)=\"updateOptions()\">\n  <div mat-dialog-content>\n    <div class=\"error-display\" *ngIf=\"errorMessage\">\n      <h5>{{ errorMessage }}</h5>\n    </div>\n    <mat-form-field class=\"forms-field\" appearance=\"fill\">\n      <mat-label>Select a resource</mat-label>\n      <mat-select name=\"resource\" formControlName=\"resource\">\n        <mat-option\n          [value]=\"option.applicationResourceName\"\n          *ngFor=\"let option of options\"\n          >{{ option.applicationResourceName }}</mat-option\n        >\n      </mat-select>\n      <mat-hint>Select an application resource</mat-hint>\n    </mat-form-field>\n    <mat-selection-list #allowed formControlName=\"selected\">\n      <mat-list-option\n        [value]=\"convertToString(allowedL)\"\n        [disabled]=\"\n          allowedL.allowed !== '*' &&\n          optionsForm.get('selected')?.value.length === allowedShowList.length\n            ? true\n            : false\n        \"\n        *ngFor=\"let allowedL of allowedShowList\"\n      >\n        {{ allowedL.allowed }}\n      </mat-list-option>\n    </mat-selection-list>\n  </div>\n  <div align=\"end\" mat-dialog-actions>\n    <button\n      (click)=\"closeDialog()\"\n      type=\"button\"\n      color=\"warn\"\n      mat-stroked-button\n      [disabled]=\"dialogRef.disableClose\"\n    >\n      Cancel</button\n    ><button\n      [disabled]=\"!optionsForm.valid || objectKeys(allowedObject).length === 0\"\n      color=\"primary\"\n      mat-flat-button\n    >\n      Update\n    </button>\n  </div>\n</form>\n", styles: [".forms-field{width:100%;margin-bottom:1rem}\n"] }]
         }], ctorParameters: function () {
         return [{ type: i1$1.MatDialogRef }, { type: undefined, decorators: [{
                         type: Inject,
@@ -1316,7 +1394,8 @@ class AddClientRolesComponent {
     }
     removeRoleToList(role) {
         const roleValue = role;
-        const indexOfRole = this.roles.indexOf(roleValue);
+        const indexOfRole = this.rolesList.findIndex((r) => r.id == roleValue.id);
+        this.roles.unshift(role);
         this.rolesList.splice(indexOfRole, 1);
     }
     closeDialog() {
@@ -1414,7 +1493,8 @@ class CreateClientComponent {
     }
     removeRoleToList(role) {
         const roleValue = role;
-        const indexOfRole = this.roles.indexOf(roleValue);
+        const indexOfRole = this.rolesList.indexOf(roleValue);
+        this.roles.unshift(role);
         this.rolesList.splice(indexOfRole, 1);
     }
     closeDialog() {

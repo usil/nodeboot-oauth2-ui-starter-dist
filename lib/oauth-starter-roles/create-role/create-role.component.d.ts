@@ -17,6 +17,7 @@ export declare class CreateRoleComponent implements OnInit, OnDestroy {
         (o: object): string[];
         (o: {}): string[];
     };
+    selectedSubscription: Subscription;
     resourceSubscription: Subscription;
     constructor(formBuilder: FormBuilder, nbService: NodebootOauth2StarterService, dialogRef: MatDialogRef<CreateRoleComponent>);
     ngOnDestroy(): void;
