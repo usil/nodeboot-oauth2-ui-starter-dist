@@ -25,5 +25,5 @@ export declare class OauthStarterRolesComponent implements OnInit {
     openOptionsDialog(role: Role): void;
     openDeleteRoleDialog(role: Role): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<OauthStarterRolesComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterRolesComponent, "lib-oauth-starter-roles", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterRolesComponent, "lib-oauth-starter-roles", never, {}, {}, never, never, false>;
 }

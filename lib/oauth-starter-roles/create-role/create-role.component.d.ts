@@ -1,5 +1,5 @@
 import { OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Resource, Option, NodebootOauth2StarterService } from '../../nodeboot-oauth2-starter.service';
@@ -8,7 +8,7 @@ export declare class CreateRoleComponent implements OnInit, OnDestroy {
     private formBuilder;
     private nbService;
     dialogRef: MatDialogRef<CreateRoleComponent>;
-    createRoleForm: FormGroup;
+    createRoleForm: UntypedFormGroup;
     errorMessage: string;
     options: Resource[];
     allowedShowList: Option[];
@@ -19,7 +19,7 @@ export declare class CreateRoleComponent implements OnInit, OnDestroy {
     };
     selectedSubscription: Subscription;
     resourceSubscription: Subscription;
-    constructor(formBuilder: FormBuilder, nbService: NodebootOauth2StarterService, dialogRef: MatDialogRef<CreateRoleComponent>);
+    constructor(formBuilder: UntypedFormBuilder, nbService: NodebootOauth2StarterService, dialogRef: MatDialogRef<CreateRoleComponent>);
     ngOnDestroy(): void;
     ngOnInit(): void;
     createRole(roleBody: {
@@ -29,5 +29,5 @@ export declare class CreateRoleComponent implements OnInit, OnDestroy {
     selectedChange(selected: boolean, value: Option): void;
     closeDialog(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<CreateRoleComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<CreateRoleComponent, "lib-create-role", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<CreateRoleComponent, "lib-create-role", never, {}, {}, never, never, false>;
 }

@@ -16,5 +16,5 @@ export declare class ShowSecretComponent implements OnInit, OnDestroy {
     ngOnInit(): void;
     closeDialog(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ShowSecretComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ShowSecretComponent, "lib-show-secret", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ShowSecretComponent, "lib-show-secret", never, {}, {}, never, never, false>;
 }

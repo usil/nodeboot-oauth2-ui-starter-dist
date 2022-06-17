@@ -27,5 +27,5 @@ export declare class OauthStarterApplicationResourceComponent implements OnInit,
     openDeleteResourceDialog(resource: Resource): void;
     openOptionsDialog(resource: Resource): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<OauthStarterApplicationResourceComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterApplicationResourceComponent, "lib-oauth-starter-application-resource", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterApplicationResourceComponent, "lib-oauth-starter-application-resource", never, {}, {}, never, never, false>;
 }

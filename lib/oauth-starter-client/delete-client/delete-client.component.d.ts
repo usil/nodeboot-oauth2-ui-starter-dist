@@ -12,5 +12,5 @@ export declare class DeleteClientComponent implements OnInit {
     delete(): void;
     closeDialog(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DeleteClientComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<DeleteClientComponent, "lib-delete-client", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DeleteClientComponent, "lib-delete-client", never, {}, {}, never, never, false>;
 }

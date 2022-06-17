@@ -8,9 +8,9 @@ export class NodebootOauth2StarterComponent {
     }
     ngOnInit() { }
 }
-NodebootOauth2StarterComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: NodebootOauth2StarterComponent, deps: [{ token: i1.NodebootOauth2StarterService }], target: i0.ɵɵFactoryTarget.Component });
-NodebootOauth2StarterComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "12.0.0", version: "13.1.2", type: NodebootOauth2StarterComponent, selector: "lib-nodeboot-oauth2-starter", inputs: { otherText: "otherText" }, ngImport: i0, template: "", styles: ["p{color:#0ff}\n"] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: NodebootOauth2StarterComponent, decorators: [{
+NodebootOauth2StarterComponent.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.2", ngImport: i0, type: NodebootOauth2StarterComponent, deps: [{ token: i1.NodebootOauth2StarterService }], target: i0.ɵɵFactoryTarget.Component });
+NodebootOauth2StarterComponent.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "14.0.2", type: NodebootOauth2StarterComponent, selector: "lib-nodeboot-oauth2-starter", inputs: { otherText: "otherText" }, ngImport: i0, template: "", styles: ["p{color:#0ff}\n"] });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.2", ngImport: i0, type: NodebootOauth2StarterComponent, decorators: [{
             type: Component,
             args: [{ selector: 'lib-nodeboot-oauth2-starter', template: "", styles: ["p{color:#0ff}\n"] }]
         }], ctorParameters: function () { return [{ type: i1.NodebootOauth2StarterService }]; }, propDecorators: { otherText: [{

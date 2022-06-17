@@ -8,5 +8,5 @@ export declare class NodebootOauth2StarterComponent implements OnInit {
     constructor(nbService: NodebootOauth2StarterService);
     ngOnInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<NodebootOauth2StarterComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<NodebootOauth2StarterComponent, "lib-nodeboot-oauth2-starter", never, { "otherText": "otherText"; }, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<NodebootOauth2StarterComponent, "lib-nodeboot-oauth2-starter", never, { "otherText": "otherText"; }, {}, never, never, false>;
 }

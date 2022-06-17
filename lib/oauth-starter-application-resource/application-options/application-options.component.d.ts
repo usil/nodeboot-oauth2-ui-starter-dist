@@ -1,5 +1,5 @@
 import { OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { NodebootOauth2StarterService, Resource, Option } from '../../nodeboot-oauth2-starter.service';
 import * as i0 from "@angular/core";
@@ -8,13 +8,13 @@ export declare class ApplicationOptionsComponent implements OnInit {
     private formBuilder;
     private nbService;
     resource: Resource;
-    addResourceOptionForm: FormGroup;
+    addResourceOptionForm: UntypedFormGroup;
     errorMessage: string;
     errorMessageRoles: string;
     options: Option[];
     optionsList: Option[];
     hidePassword: boolean;
-    constructor(dialogRef: MatDialogRef<ApplicationOptionsComponent>, formBuilder: FormBuilder, nbService: NodebootOauth2StarterService, resource: Resource);
+    constructor(dialogRef: MatDialogRef<ApplicationOptionsComponent>, formBuilder: UntypedFormBuilder, nbService: NodebootOauth2StarterService, resource: Resource);
     ngOnInit(): void;
     isBasicOption(allowed: string): boolean;
     addOptionToList(): void;
@@ -22,5 +22,5 @@ export declare class ApplicationOptionsComponent implements OnInit {
     closeDialog(): void;
     updateResourceOptions(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ApplicationOptionsComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ApplicationOptionsComponent, "lib-application-options", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ApplicationOptionsComponent, "lib-application-options", never, {}, {}, never, never, false>;
 }

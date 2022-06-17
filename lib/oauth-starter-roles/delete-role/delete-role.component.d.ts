@@ -12,5 +12,5 @@ export declare class DeleteRoleComponent implements OnInit {
     delete(): void;
     closeDialog(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DeleteRoleComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<DeleteRoleComponent, "lib-delete-role", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DeleteRoleComponent, "lib-delete-role", never, {}, {}, never, never, false>;
 }

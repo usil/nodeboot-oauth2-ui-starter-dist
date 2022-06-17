@@ -14,5 +14,5 @@ export declare class ShowNewTokenComponent implements OnInit {
     ngOnInit(): void;
     closeDialog(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ShowNewTokenComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ShowNewTokenComponent, "lib-show-new-token", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ShowNewTokenComponent, "lib-show-new-token", never, {}, {}, never, never, false>;
 }

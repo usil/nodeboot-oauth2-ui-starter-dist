@@ -12,5 +12,5 @@ export declare class DeleteUserComponent implements OnInit {
     delete(): void;
     closeDialog(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DeleteUserComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<DeleteUserComponent, "lib-delete-user", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DeleteUserComponent, "lib-delete-user", never, {}, {}, never, never, false>;
 }

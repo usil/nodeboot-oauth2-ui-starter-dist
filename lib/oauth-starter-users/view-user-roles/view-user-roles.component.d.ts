@@ -10,5 +10,5 @@ export declare class ViewUserRolesComponent implements OnInit {
     closeDialog(): void;
     ngOnInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ViewUserRolesComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ViewUserRolesComponent, "lib-view-user-roles", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ViewUserRolesComponent, "lib-view-user-roles", never, {}, {}, never, never, false>;
 }

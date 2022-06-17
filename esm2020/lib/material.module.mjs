@@ -20,8 +20,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 import * as i0 from "@angular/core";
 export class LibraryMaterials {
 }
-LibraryMaterials.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: LibraryMaterials, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
-LibraryMaterials.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: LibraryMaterials, exports: [MatToolbarModule,
+LibraryMaterials.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.2", ngImport: i0, type: LibraryMaterials, deps: [], target: i0.ɵɵFactoryTarget.NgModule });
+LibraryMaterials.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "14.0.2", ngImport: i0, type: LibraryMaterials, exports: [MatToolbarModule,
         MatIconModule,
         MatButtonModule,
         MatSidenavModule,
@@ -40,7 +40,7 @@ LibraryMaterials.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "12.0.0", versio
         MatExpansionModule,
         MatTooltipModule,
         MatCheckboxModule] });
-LibraryMaterials.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: LibraryMaterials, imports: [MatToolbarModule,
+LibraryMaterials.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "14.0.2", ngImport: i0, type: LibraryMaterials, imports: [MatToolbarModule,
         MatIconModule,
         MatButtonModule,
         MatSidenavModule,
@@ -59,7 +59,7 @@ LibraryMaterials.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", versio
         MatExpansionModule,
         MatTooltipModule,
         MatCheckboxModule] });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: LibraryMaterials, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.2", ngImport: i0, type: LibraryMaterials, decorators: [{
             type: NgModule,
             args: [{
                     exports: [

@@ -26,5 +26,5 @@ export declare class OauthStarterUsersComponent implements OnDestroy, AfterViewI
     openUpdateRolesDialog(user: User): void;
     openUpdateUserDialog(user: User): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<OauthStarterUsersComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterUsersComponent, "lib-oauth-starter-users", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterUsersComponent, "lib-oauth-starter-users", never, {}, {}, never, never, false>;
 }

@@ -1,5 +1,5 @@
 import { OnDestroy, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { UntypedFormGroup, UntypedFormBuilder } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { Resource, Role, Option, NodebootOauth2StarterService } from '../../nodeboot-oauth2-starter.service';
@@ -9,7 +9,7 @@ export declare class OptionsComponent implements OnInit, OnDestroy {
     role: Role;
     private nbService;
     private formBuilder;
-    optionsForm: FormGroup;
+    optionsForm: UntypedFormGroup;
     errorMessage: string;
     options: Resource[];
     allowedShowList: Option[];
@@ -25,12 +25,12 @@ export declare class OptionsComponent implements OnInit, OnDestroy {
     };
     selectedSubscription: Subscription;
     resourceSubscription: Subscription;
-    constructor(dialogRef: MatDialogRef<OptionsComponent>, role: Role, nbService: NodebootOauth2StarterService, formBuilder: FormBuilder);
+    constructor(dialogRef: MatDialogRef<OptionsComponent>, role: Role, nbService: NodebootOauth2StarterService, formBuilder: UntypedFormBuilder);
     ngOnInit(): void;
     ngOnDestroy(): void;
     selectedChange(selected: boolean, value: Option): void;
     closeDialog(): void;
     updateOptions(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<OptionsComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<OptionsComponent, "lib-options", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<OptionsComponent, "lib-options", never, {}, {}, never, never, false>;
 }

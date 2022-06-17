@@ -13,5 +13,5 @@ export declare class DeleteApplicationResourceComponent implements OnInit {
     delete(): void;
     closeDialog(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<DeleteApplicationResourceComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<DeleteApplicationResourceComponent, "lib-delete-application-resource", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DeleteApplicationResourceComponent, "lib-delete-application-resource", never, {}, {}, never, never, false>;
 }

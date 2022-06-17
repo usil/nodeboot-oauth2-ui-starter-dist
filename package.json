@@ -1,13 +1,13 @@
 {
   "name": "nodeboot-oauth2-starter-ui",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "peerDependencies": {
-    "@angular/material": "^13.0.0",
-    "@angular/animations": "~13.0.0",
-    "@angular/cdk": "^13.0.0",
-    "@angular/common": "^13.1.0",
-    "@angular/core": "^13.1.0",
-    "ngx-clipboard": "^15.0.1"
+    "@angular/material": "^14.0.2",
+    "@angular/animations": "~14.0.2",
+    "@angular/cdk": "^14.0.2",
+    "@angular/common": "^14.0.2",
+    "@angular/core": "^14.0.2",
+    "ngx-clipboard": "^15.1.0"
   },
   "dependencies": {
     "tslib": "^2.3.0"
@@ -17,13 +17,13 @@
   "esm2020": "esm2020/nodeboot-oauth2-starter-ui.mjs",
   "fesm2020": "fesm2020/nodeboot-oauth2-starter-ui.mjs",
   "fesm2015": "fesm2015/nodeboot-oauth2-starter-ui.mjs",
-  "typings": "nodeboot-oauth2-starter-ui.d.ts",
+  "typings": "index.d.ts",
   "exports": {
     "./package.json": {
       "default": "./package.json"
     },
     ".": {
-      "types": "./nodeboot-oauth2-starter-ui.d.ts",
+      "types": "./index.d.ts",
       "esm2020": "./esm2020/nodeboot-oauth2-starter-ui.mjs",
       "es2020": "./fesm2020/nodeboot-oauth2-starter-ui.mjs",
       "es2015": "./fesm2015/nodeboot-oauth2-starter-ui.mjs",

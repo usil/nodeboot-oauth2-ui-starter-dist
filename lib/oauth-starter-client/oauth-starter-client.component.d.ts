@@ -33,5 +33,5 @@ export declare class OauthStarterClientComponent implements OnInit {
     openUpdateClientDialog(client: Client): void;
     openDialogDeleteClient(client: Client): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<OauthStarterClientComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterClientComponent, "lib-oauth-starter-client", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterClientComponent, "lib-oauth-starter-client", never, {}, {}, never, never, false>;
 }

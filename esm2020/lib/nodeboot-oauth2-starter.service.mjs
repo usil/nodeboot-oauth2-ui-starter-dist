@@ -162,9 +162,9 @@ export class NodebootOauth2StarterService {
         return this.configuration.api;
     }
 }
-NodebootOauth2StarterService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: NodebootOauth2StarterService, deps: [{ token: i1.HttpClient }, { token: 'configuration' }], target: i0.ɵɵFactoryTarget.Injectable });
-NodebootOauth2StarterService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: NodebootOauth2StarterService, providedIn: 'root' });
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "13.1.2", ngImport: i0, type: NodebootOauth2StarterService, decorators: [{
+NodebootOauth2StarterService.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "14.0.2", ngImport: i0, type: NodebootOauth2StarterService, deps: [{ token: i1.HttpClient }, { token: 'configuration' }], target: i0.ɵɵFactoryTarget.Injectable });
+NodebootOauth2StarterService.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "14.0.2", ngImport: i0, type: NodebootOauth2StarterService, providedIn: 'root' });
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "14.0.2", ngImport: i0, type: NodebootOauth2StarterService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root',

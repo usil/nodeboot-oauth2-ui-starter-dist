@@ -10,5 +10,5 @@ export declare class OauthStarterUserProfileComponent implements OnInit {
     ngOnInit(): void;
     openChangePasswordDialog(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<OauthStarterUserProfileComponent, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterUserProfileComponent, "lib-oauth-starter-user-profile", never, {}, {}, never, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<OauthStarterUserProfileComponent, "lib-oauth-starter-user-profile", never, {}, {}, never, never, false>;
 }
